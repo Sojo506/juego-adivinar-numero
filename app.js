@@ -4,7 +4,7 @@
 let numeroSecreto = 0;
 let contador = 0;
 const numeroMaximo = 10;
-const contenedorNumeros = [];
+let contenedorNumeros = [];
 const containerInput = document.querySelector('.container__input');
 const reiniciar = document.querySelector('#reiniciar');
 const intentar = document.querySelector('#btn__intentar');
@@ -17,7 +17,7 @@ intentar.addEventListener('click', verificarIntento);
 
 // Función que verifica el intento del usuario
 function verificarIntento() {
-    const numeroUsuario = parseInt(containerInput.value);
+    numeroUsuario = parseInt(containerInput.value);
 
     if (isNaN(numeroUsuario)) {
         asignarTextoElemento(
@@ -55,12 +55,22 @@ function asignarTextoElemento(selector, contenido) {
 // Función que genera un número aleatorio entre un rango dado y lo almacena si no ha sido generado antes
 function numeroRandom(min, max) {
     const numero = Math.floor(Math.random() * (max - min + 1)) + min;
+    console.log(numero)
 
-    if (contenedorNumeros.includes(numero)) {
-        return numeroRandom(min, max);
+    if (contenedorNumeros.length === numeroMaximo) {
+        asignarTextoElemento(
+            '.texto__parrafo',
+            `Ya has jugado todas las posibilidades!`
+        );
+        contenedorNumeros = [];
+        finalizarJuego();
     } else {
-        contenedorNumeros.push(numero);
-        return numero;
+        if (contenedorNumeros.includes(numero)) {
+            return numeroRandom(min, max);
+        } else {
+            contenedorNumeros.push(numero);
+            return numero;
+        }
     }
 }
 
